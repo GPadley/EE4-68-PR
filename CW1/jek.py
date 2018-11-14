@@ -85,7 +85,7 @@ for M_lda in range(1,N+1):
     w_fld = w_fld[:M_lda]
     v_fld = v_fld[:, :M_lda]
 
-    v_opt = np.dot(v_pca, v_fld)
+    v_opt = np.real(np.dot(v_pca, v_fld))
     v_opt = preprocessing.normalize(v_opt, axis=0)
     #print(np.transpose(v_opt)[0].shape)
     train_img = np.transpose(np.array_split(np.transpose(v_opt)[0], W))
