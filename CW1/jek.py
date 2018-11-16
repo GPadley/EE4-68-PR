@@ -62,9 +62,9 @@ w_pca, v_pca = np.linalg.eig((1/N)*np.matmul(A.T, A))
 inds = w_pca.argsort()[::-1]
 w_pca_use = w_pca[inds]
 v_pca_use = v_pca[:, inds]
-for M_lda in tqdm(range(1,120)):
+for M_lda in tqdm(range(1,53)):
     e_val = []
-    for M_pca in tqdm(range(1,120)):
+    for M_pca in tqdm(range(1,417)):
         w_pca = w_pca_use[:M_pca]
         v_pca = v_pca_use[:, :M_pca]
         v_pca = preprocessing.normalize(np.matmul(A, v_pca), axis=0)
@@ -97,7 +97,7 @@ for M_lda in tqdm(range(1,120)):
     e.append(e_val)
 
 a = np.asarray(e)
-np.savetxt("foo.csv", a, delimiter=",")
+np.savetxt("foo2.csv", a, delimiter=",")
 
 # plt.plot(e)
 # plt.show()
