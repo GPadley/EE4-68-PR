@@ -198,16 +198,6 @@ def commit_mac(bags_pred, bags_err):
     return y_pred
 
 
-
-# models_error, models_pred = N_space_error(20, X_train, l_train)
-#
-# models_pred = np.asarray(models_pred)
-# models_pred = np.squeeze(models_pred, axis=2)
-# models_commit = commit_mac(models_pred, models_error)
-#
-# print('    ', commit_cor(models_commit, l_test))
-
-# f = open('features.csv', 'a+')
 data = []
 from tqdm import tqdm
 M_0 = 40
