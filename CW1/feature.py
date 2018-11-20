@@ -207,20 +207,23 @@ def commit_mac(bags_pred, bags_err):
 #
 # print('    ', commit_cor(models_commit, l_test))
 
-f = open('features.csv', 'a+')
-
+# f = open('features.csv', 'a+')
+data = []
 from tqdm import tqdm
 M_0_max = 120
 M_MAX = 180
 for i in tqdm(range(20,M_0_max, 10)):
     for j in tqdm(range(20,M_MAX - i, 10)):
-        M_lda = 40
+        M_lda = 35
         M_0 = i
         M_1 = j
         models_error, models_pred = N_space_error(20, X_train, l_train)
         models_pred = np.asarray(models_pred)
         models_pred = np.squeeze(models_pred, axis=2)
         models_commit = commit_mac(models_pred, models_error)
-        correct = str(commit_cor(models_commit, l_test)) + ',' + str(M_0) + ',' + str(M_1) + ',' + str(M_lda)
-        f.write(correct)
-        print('    ', correct)
+        correct = commit_cor(models_commit, l_test)
+        data.append([correct, M_0, M_1])
+        print('    ', correct, M_0, M_1)
+
+data = np.asarray(data)
+np.savetxt("features2.csv", data, delimiter=",")
