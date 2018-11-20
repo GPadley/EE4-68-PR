@@ -28,7 +28,7 @@ M_lda_ratio = 0.1
 N = round(X.shape[0]*split)
 N_bag = round(X.shape[0]*split*bag_ratio) #different for each bag now
 
-X_train, X_test, l_train, l_test = train_test_split(X, l, test_size=(1-split), stratify = l)
+X_train, X_test, l_train, l_test = train_test_split(X, l, test_size=(1-split), stratify = l, random_state=18)
 # X_bar = np.mean(X, axis=1)
 X_train, X_test = X_train.values, X_test.values
 l_train, l_test = l_train.values, np.transpose(l_test.values)
@@ -80,8 +80,8 @@ def rand_PCA(X_train_pca, X_bar_pca):
     w_pca = w_pca[inds]
     v_pca = v_pca[:,inds]
 
-    M_0 = 60
-    M_1 = 40
+    # M_0 = 60
+    # M_1 = 40
 
     mask = []
 
@@ -210,20 +210,20 @@ def commit_mac(bags_pred, bags_err):
 # f = open('features.csv', 'a+')
 data = []
 from tqdm import tqdm
-M_0_max = 120
-M_MAX = 180
-for i in tqdm(range(20,M_0_max, 10)):
-    for j in tqdm(range(20,M_MAX - i, 10)):
+M_0 = 40
+machines = [1,2,3,4,5,7,10,15,20,30,50,75,100]
+M_1s = [80, 60, 40, 20, 10]
+for i in tqdm(M_1s):
+    for j in tqdm(machines):
         M_lda = 35
-        M_0 = i
-        M_1 = j
-        models_error, models_pred = N_space_error(20, X_train, l_train)
+        M_1 = i
+        models_error, models_pred = N_space_error(j, X_train, l_train)
         models_pred = np.asarray(models_pred)
         models_pred = np.squeeze(models_pred, axis=2)
         models_commit = commit_mac(models_pred, models_error)
         correct = commit_cor(models_commit, l_test)
-        data.append([correct, M_0, M_1])
-        print('    ', correct, M_0, M_1)
+        data.append([correct, j, M_0/M_1])
+        print('    ', correct, j, M_0/M_1)
 
 data = np.asarray(data)
-np.savetxt("features2.csv", data, delimiter=",")
+np.savetxt("features3.csv", data, delimiter=",")
